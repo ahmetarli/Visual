@@ -3,24 +3,31 @@ name: CI-CD Pipeline
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 8 5 * *" # Her ayın 5'inde sabah 08:00
+    - cron: "0 8 5 * *"
   push:
     branches:
       - main
   pull_request:
 
 jobs:
-  build:
+  build: #ilk job
     runs-on: ubuntu-latest
+    name: Build jobs
     steps:
-      - uses: actions/checkout@v3
-      - name: Echo user
-        run: echo "Hello, ${{ github.actor }}"
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-  cypress-tests:
+      - name: Echo user login
+        run: echo "hello, ${{ github.actor }}"
+
+  test: #ikinci job
     runs-on: ubuntu-latest
+    name: Cypress test jobs
+    container:
+      image: cypress/base:latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository  #d6
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -28,15 +35,10 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      # ✅ Resmi Cypress Action ile test çalıştırma
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v5
-        with:
-          browser: chrome
-          record: false
-          headless: true
+        run: npx cypress run 
 
       - name: Upload Cypress videos
         if: always()
@@ -52,4 +54,4 @@ jobs:
         with:
           name: cypress-screenshots
           path: cypress/screenshots/**/*.png
-          retention-days: 1
+          retention-days: 1 #5
