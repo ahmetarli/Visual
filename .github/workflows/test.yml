@@ -54,4 +54,4 @@ jobs:
         with:
           name: cypress-screenshots
           path: cypress/screenshots/**/*.png
-          retention-days: 1
+          retention-days: 1 #5
