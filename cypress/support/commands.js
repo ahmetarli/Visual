@@ -23,26 +23,3 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
-Cypress.Commands.add('signIn', (mai, password) => {
-    
-    cy.visit("https://www.edu.goit.global/account/login")
-
-    cy.get('#user_email').type(mai)
-
-    cy.get("#user_password").type(password)
-
-    cy.get("[type='submit']").click()
-
-})
-
-Cypress.Commands.add('login', (mail,password) => {
-    cy.visit("https://www.edu.goit.global/account/login")
-
-    cy.get('#user_email').type(mail)
-
-    cy.get("#user_password").type(password)
-
-    cy.get("[type='submit']").click()
-
-})
