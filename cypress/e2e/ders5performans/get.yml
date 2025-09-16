@@ -1,0 +1,17 @@
+config:
+  target: "http://httpbin.org/"
+  phases: 
+    - duration: 1                          # 1 saniye test etmek
+      arrivalRate: 2                      # saniyede eklenen sanal kişi sayısı
+      name: Goit Performans Test       
+      
+scenarios:
+  - name: Get a resource 
+    flow:
+      - get: 
+          url: "{{target}}get"                # çalıştırmak için artillery run testismi.yml ve output almak için --output rapor1.json
+           
+
+
+
+

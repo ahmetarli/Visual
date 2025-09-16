@@ -1,0 +1,55 @@
+config:
+  target: "http://httpbin.org/"
+  phases: 
+    - duration: 1                         
+      arrivalRate: 1                      
+      name: Scalability test1 Homework     
+    - duration: 1
+      arrivalRate: 3
+      name: Scalability test2 Homework 
+  plugins:
+    ensure:
+      thresholds:
+        - http.response_time.max: 2000
+        - http.response_time.2xx: 2000
+      conditions:
+        - expression: vusers.failed == 0
+        - expression: "http.request_rate >= 2 and http.response_time.max < 1000"
+        - expression: vusers.created == 4
+  payload:
+    - path: "keywords.csv"
+      fields:
+        - "firstword"
+        - "secondword"
+      order: random
+
+
+      
+scenarios:
+  - name: Homework
+    flow:
+      - get:
+          url: "{{target}}get?param1={{firstword}}"
+      - post: 
+          url: "{{target}}post?param2={{secondword}}"    
+          json:
+            username: "goit"
+            password: "12345"
+          headers:
+            Content-Type: "application/json"
+          capture:
+            - json: "$.json"
+              as: "response_body"
+            - json: "$.headers.Host"
+              as: "response_host"
+      - log: "Response Body : {{response_body}}"
+      - log: "Response Host : {{response_host}}"
+      - log: "Response ilk değer : {{firstword}}"
+      - log: "Response ikinci değer : {{secondword}}"
+
+                       
+           
+
+
+
+
